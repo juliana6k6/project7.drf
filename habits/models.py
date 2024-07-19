@@ -3,6 +3,7 @@ from users.models import User
 from django.utils import timezone
 from datetime import timedelta
 
+
 class Habit(models.Model):
     """Модель привычки:
       Поле related_habit указывается только для полезной привычки
