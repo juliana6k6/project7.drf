@@ -20,7 +20,7 @@ class HabitsCreateAPIView(CreateAPIView):
 
 
 class HabitsRetrieveAPIView(RetrieveAPIView):
-    """Эндпоинт редактирования привычки"""
+    """Эндпоинт отображения одной привычки"""
 
     queryset = Habit.objects.all()
     serializer_class = HabitSerializer
