@@ -36,7 +36,7 @@ class HabitsDestroyAPIView(DestroyAPIView):
 
 
 class HabitsListAPIView(ListAPIView):
-    """Эндпоинт вывода списка привычек"""
+    """Эндпоинт вывода списка привычек c признаком публичности"""
     queryset = Habit.objects.filter(is_published=True)
     serializer_class = HabitSerializer
 
