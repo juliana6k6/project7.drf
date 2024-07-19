@@ -43,8 +43,12 @@ class HabitsDestroyAPIView(DestroyAPIView):
 class HabitsListAPIView(ListAPIView):
     """Эндпоинт вывода списка привычек c признаком публичности"""
 
-    queryset = Habit.objects.filter(is_published=True)
+    queryset = Habit.objects.all()
     serializer_class = HabitSerializer
+
+    def get_queryset(self):
+        """Фильтруем список привычек по признаку публикации"""
+        return Habit.objects.filter(is_published=True)
 
 
 class UserHabitsListAPIView(ListAPIView):
@@ -54,6 +58,7 @@ class UserHabitsListAPIView(ListAPIView):
     serializer_class = HabitSerializer
 
     def get_queryset(self):
+        """Фильтруем список привычек по текущему пользователю"""
         user = self.request.user
         queryset = Habit.objects.filter(owner=user)
         return queryset
