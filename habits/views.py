@@ -2,10 +2,13 @@ from rest_framework import viewsets
 from rest_framework.generics import (CreateAPIView, DestroyAPIView,
                                      ListAPIView, RetrieveAPIView,
                                      UpdateAPIView)
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.viewsets import ModelViewSet
 
 from habits.models import Habit
 from habits.serializers import HabitSerializer
+from users.permissions import IsOwner
+
 
 # class HabitViewSet(ModelViewSet):
 #     queryset = Habit.objects.all()
@@ -30,6 +33,7 @@ class HabitsRetrieveAPIView(RetrieveAPIView):
 
     queryset = Habit.objects.all()
     serializer_class = HabitSerializer
+    permission_classes = [IsAuthenticated, IsOwner]
 
 
 class HabitsUpdateAPIView(UpdateAPIView):
@@ -37,6 +41,7 @@ class HabitsUpdateAPIView(UpdateAPIView):
 
     queryset = Habit.objects.all()
     serializer_class = HabitSerializer
+    permission_classes = [IsAuthenticated, IsOwner]
 
 
 class HabitsDestroyAPIView(DestroyAPIView):
@@ -44,6 +49,7 @@ class HabitsDestroyAPIView(DestroyAPIView):
 
     queryset = Habit.objects.all()
     serializer_class = HabitSerializer
+    permission_classes = [IsAuthenticated, IsOwner]
 
 
 class HabitsListAPIView(ListAPIView):
@@ -51,6 +57,7 @@ class HabitsListAPIView(ListAPIView):
 
     queryset = Habit.objects.all()
     serializer_class = HabitSerializer
+    permission_classes = [AllowAny]
 
     def get_queryset(self):
         """Фильтруем список привычек по признаку публикации"""
@@ -62,6 +69,7 @@ class UserHabitsListAPIView(ListAPIView):
 
     queryset = Habit.objects.all()
     serializer_class = HabitSerializer
+    permission_classes = [IsAuthenticated, IsOwner]
 
     def get_queryset(self):
         """Фильтруем список привычек по текущему пользователю"""
