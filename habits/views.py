@@ -18,6 +18,12 @@ class HabitsCreateAPIView(CreateAPIView):
     queryset = Habit.objects.all()
     serializer_class = HabitSerializer
 
+    def perform_create(self, serializer):
+        """Привязываем текущего пользователя к создаваемому объекту"""
+        habit = serializer.save()
+        habit.owner = self.request.user
+        habit.save()
+
 
 class HabitsRetrieveAPIView(RetrieveAPIView):
     """Эндпоинт отображения одной привычки"""
