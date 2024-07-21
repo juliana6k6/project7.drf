@@ -20,7 +20,7 @@ class RelatedHabitOrRewardValidator:
                                   'выберите что-то одно')
 
 
-class NotPleasantHabitValidator:
+class PleasantHabitValidator:
     """Проверка на отсутствие у приятной привычки полей связанной привычки и вознаграждения"""
 
     def __init__(self, field1, field2, field3):
@@ -38,16 +38,21 @@ class NotPleasantHabitValidator:
 
 
 class RelatedHabitValidator:
-    """Проверка на принадлежность связанной привычки к приятным:
-    Связать с полезной привычкой можно только приятную
+    """Проверка на принадлежность связанной привычки к приятным: связать с полезной привычкой
+    можно только приятную привычку
     """
 
+    def __init__(self, field1, field2, field3):
+        self.field1 = field1
+        self.field2 = field2
+        self.field3 = field3
+
     def __call__(self, value):
-        related_habit = value.get('related_habit')
-        if related_habit:
-            obj = Habit.objects.get(id=related_habit.id)
-            if not obj.is_nice:
-                raise ValidationError(
+        related_habit = dict(value).get(self.field1)  # value.get('related_habit')
+        reward = dict(value).get(self.field2)
+        is_pleasant = dict(value).get(self.field3)
+        if related_habit and reward and is_pleasant:
+            raise ValidationError(
                     'В связанные привычки могут попадать только привычки с признаком приятной привычки.')
 
 
