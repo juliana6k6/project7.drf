@@ -54,9 +54,13 @@ class RelatedHabitValidator:
                     'В связанные привычки могут попадать только привычки с признаком приятной привычки.')
 
 
-def duration_validator(duration):
-    """Проверка продолжительности выполнения привычки:
-     Должна быть не более 2 минут"""
+class DurationTimeValidator:
+    """Проверка продолжительности выполнения привычки: не более 2 минут"""
 
-    if duration > timedelta(minutes=2):
-        raise ValidationError('Время выполнения должно быть не больше 120 секунд.')
+    def __init__(self, field):
+        self.field = field
+
+    def __call__(self, value):
+        duration = dict(value).get(self.field)
+        if duration and duration >= 120:
+            raise ValidationError('Время выполнения привычки должно быть не больше 120 секунд.')
