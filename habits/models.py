@@ -72,7 +72,7 @@ class Habit(models.Model):
         verbose_name="вознаграждение",
         help_text="Указывается только для полезной привычки, если нет привязки к приятной",
     )
-    duration = models.PositiveIntegerField(
+    period_time = models.PositiveIntegerField(
         default=120,
         verbose_name="время на выполнение в секундах",
         help_text="Укажите продолжительность выполнения",

@@ -13,7 +13,7 @@ class HabitSerializer(ModelSerializer):
             RelatedHabitOrRewardValidator(field1="related_habit", field2="reward"),
             PleasantHabitValidator(field1="related_habit", field2="reward", field3="is_pleasant"),
             RelatedHabitValidator(field1="related_habit", field2="is_pleasant"),
-            DurationTimeValidator(field="duration")]
+            DurationTimeValidator(field="period_time")]
 
 
 

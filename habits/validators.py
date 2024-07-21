@@ -1,9 +1,4 @@
-from datetime import timedelta
-
 from rest_framework.serializers import ValidationError
-
-from habits.models import Habit
-
 
 class RelatedHabitOrRewardValidator:
     """Проверка заполнения полей связанной привычки и вознаграждения: должно быть заполнено только одно поле"""
@@ -61,6 +56,6 @@ class DurationTimeValidator:
         self.field = field
 
     def __call__(self, value):
-        duration = dict(value).get(self.field)
-        if duration and duration >= 120:
+        period_time = dict(value).get(self.field)
+        if period_time and period_time > 120:
             raise ValidationError('Время выполнения привычки должно быть не больше 120 секунд.')
