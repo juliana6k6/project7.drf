@@ -13,15 +13,6 @@ class Habit(models.Model):
     Поле reward указывается только для полезной привычки, если нет привязки к приятной
     """
 
-    PERIOD_CHOICES = [
-        ("once a day", "1 раз в день"),
-        ("every 2 days", "каждые 2 дня"),
-        ("every 3 days", "каждые 3 дня"),
-        ("every 4 days", "каждые 4 дня"),
-        ("every 5 days", "каждые 5 дней"),
-        ("every 6 days", "каждые 6 дней"),
-        ("once a week", "1 раз в неделю"),
-    ]
     owner = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
