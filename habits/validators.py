@@ -42,16 +42,14 @@ class RelatedHabitValidator:
     можно только приятную привычку
     """
 
-    def __init__(self, field1, field2, field3):
+    def __init__(self, field1, field2):
         self.field1 = field1
         self.field2 = field2
-        self.field3 = field3
 
     def __call__(self, value):
         related_habit = dict(value).get(self.field1)  # value.get('related_habit')
-        reward = dict(value).get(self.field2)
-        is_pleasant = dict(value).get(self.field3)
-        if related_habit and reward and is_pleasant:
+        is_pleasant = dict(value).get(self.field2)
+        if related_habit and not is_pleasant:
             raise ValidationError(
                     'В связанные привычки могут попадать только привычки с признаком приятной привычки.')
 

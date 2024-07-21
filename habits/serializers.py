@@ -11,6 +11,6 @@ class HabitSerializer(ModelSerializer):
         validators = [
             RelatedHabitOrRewardValidator(field1="related_habit", field2="reward"),
             PleasantHabitValidator(field1="related_habit", field2="reward", field3="is_pleasant"),
-            RelatedHabitValidator(field1="related_habit", field2="reward", field3="is_pleasant")
+            RelatedHabitValidator(field1="related_habit", field2="is_pleasant")
 
 
