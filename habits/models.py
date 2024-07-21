@@ -58,12 +58,10 @@ class Habit(models.Model):
         verbose_name="связанная приятная привычка",
         help_text="Указывается только для полезной привычки",
     )
-    period = models.CharField(
-        max_length=25,
+    periodicity = models.PositiveIntegerField(
         verbose_name="Периодичность",
-        choices=PERIOD_CHOICES,
-        default="once a day",
-        help_text="Укажите периодичность привычки",
+        default=7,
+        help_text="Укажите периодичность выполнения привычки",
     )
     reward = models.CharField(
         max_length=100,
