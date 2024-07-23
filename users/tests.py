@@ -21,7 +21,7 @@ class UsersTestCase(APITestCase):
             "password": "abcde"
         }
         response = self.client.post(url, data=data)
-        print("\Пользователь создан.")
+        print("Пользователь создан.")
         print(response.json())
         self.assertEquals(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(User.objects.all().count(), 2)

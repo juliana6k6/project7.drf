@@ -14,7 +14,7 @@ class HabitTestCase(APITestCase):
         """Создание тестовой привычки"""
         self.habit = Habit.objects.create(
             place="place_test", time="2024-07-22 16-00", owner=self.user, action="бегать",
-            is_pleasant=False, periodicity=1, period_time=120,
+            is_pleasant=False, periodicity=1, period_time=60,
             reward="съесть конфету", is_public=True, related_habit=None)
 
     def test_habit_create(self):
@@ -103,31 +103,30 @@ class HabitTestCase(APITestCase):
     def test_user_habit_list(self):
         """Тестирование списка привычек конкретного пользователя"""
         response = self.client.get(reverse('habits:user-habits'))
-
+        data = response.json()
+        print(data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(Habit.objects.all().count(), 1)
-
-        # data = response.json()
-        # result = {
-        #     "count": 1,
-        #     "next": None,
-        #     "previous": None,
-        #     "results": [
-        #         {
-        #             "id": self.habit.id,
-        #             "place": "place_test",
-        #             "time": "2024-05-27 08:40",
-        #             "action": "бегать",
-        #             "is_pleasant": self.habit.is_pleasant,
-        #             "periodicity": self.habit.periodicity,
-        #             "reward": "съесть конфету",
-        #             "period_time": self.habit.period_time,
-        #             "is_public": self.habit.is_public,
-        #             "owner": self.user.pk,
-        #             "related_habit": self.habit.related_habit
-        #         }
-        #     ]
-        # }
-        # self.assertEqual(data, result)
+        result = {
+            "count": 1,
+            "next": None,
+            "previous": None,
+            "results": [
+                {
+                    "id": self.habit.id,
+                    "place": "place_test",
+                    "time": "2024-07-22T16:00:00Z",
+                    "action": "бегать",
+                    "is_pleasant": False,
+                    "periodicity": 1,
+                    "reward": "съесть конфету",
+                    "period_time": 60,
+                    "is_public": True,
+                    "owner": self.user.pk,
+                    "related_habit": None #self.habit.related_habit
+                }
+            ]
+        }
+        self.assertEqual(data, result)
 
 
