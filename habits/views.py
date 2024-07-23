@@ -64,7 +64,7 @@ class HabitsListAPIView(ListAPIView):
 
     def get_queryset(self):
         """Фильтруем список привычек по признаку публикации"""
-        return Habit.objects.filter(is_published=True)
+        return Habit.objects.filter(is_public=True)
 
 
 class UserHabitsListAPIView(ListAPIView):

@@ -71,9 +71,7 @@ class Habit(models.Model):
         verbose_name="Признак публичности",
         help_text="Можно публиковать в общий доступ",
     )
-    users = models.ManyToManyField(
-        User, verbose_name="пользователи", related_name="users", blank=True, null=True
-    )
+
 
     def __str__(self):
         return f"{self.action} в {self.time} {self.place}"

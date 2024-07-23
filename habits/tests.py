@@ -17,31 +17,33 @@ class HabitTestCase(APITestCase):
             is_pleasant=False, periodicity=1, period_time=120,
             reward="съесть конфету", is_public=True, related_habit=None)
 
-
     def test_habit_create(self):
         """Тестирование создания привычки"""
         url = reverse("habits:habits-create")
-        data = {"place": "place_test1", "time": "2024-05-27 08:40", "owner": self.user.id,
+        data = {"place": "place_test1",
+                "time": "2024-05-27 08:40",
+                "owner": self.user.pk,
                 "action": "купаться",
-                "is_pleasant": False, "periodicity": 2, "period_time": 120, "reward": "съесть торт",
-                "is_public": True}
+                "periodicity": 2,
+                "period_time": 119,
+                "reward": "съесть торт",
+                "is_public": True
+                }
         response = self.client.post(url, data)
         print(response.json())
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        # self.assertEqual(Lesson.objects.all().count(), 2)
-        # self.assertEqual(
-        #     response.json(),
-        #     {
-        #         "id": 2,
-        #         "url": "https://course1.youtube.com/",
-        #         "title": "Lesson1",
-        #         "description": "Description_test",
-        #         "preview": None,
-        #         "course": 1,
-        #         "owner": 1,
-        #     },
-        # )
+        self.assertEqual(Habit.objects.all().count(), 2)
 
+    def test_habit_update(self):
+        """Тестирование обновления привычки"""
+        url = reverse("habits:habits-update", args=(self.habit.pk,))
+        data = {"place": "place_update", "action": "плавать"}
+        response = self.client.patch(url, data)
+        data1 = response.json()
+        print(data1)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.habit.refresh_from_db()
+        self.assertEqual(data.get("place"), "place_update")
 
     def test_habit_retrieve(self):
         """Тестирование просмотра информации о привычке"""
@@ -51,35 +53,74 @@ class HabitTestCase(APITestCase):
         print(data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(data.get("action"), self.habit.action)
-#     def test_lesson_update(self):
-#         """Тестирование редактирования урока"""
-#         url = reverse("materials:lesson-update", args=(self.lesson.pk,))
-#         data = {"title": "Lesson1_update", "description": "Description_update"}
-#         response = self.client.patch(url, data)
-#         data1 = response.json
-#         print(data1)
-#         self.assertEqual(response.status_code, status.HTTP_200_OK)
-#         # self.lesson.refresh_from_db()
-#         self.assertEqual(data.get("title"), "Lesson1_update")
-#
-#     def test_lesson_delete(self):
-#         """Тестирование удаления урока"""
-#         url = reverse("materials:lesson-delete", args=(self.lesson.pk,))
-#         response = self.client.delete(url)
-#         print(f"{self.lesson.title} удалён")
-#         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
-#         self.assertEqual(Lesson.objects.all().count(), 0)
-#         self.assertFalse(Lesson.objects.filter(id=self.lesson.id).exists())
-#
-#         # self.assertFalse(Lesson.objects.filter(id=self.lesson.id).exists())
-#
-#     def test_lesson_list(self):
-#         url = reverse("materials:lesson-list")
-#         response = self.client.get(url)
-#         data = response.json
-#         print(data)
-#         self.assertEqual(response.status_code, status.HTTP_200_OK)
-#         self.assertEqual(Lesson.objects.all().count(), 1)
-# from django.test import TestCase
-#
-# # Create your tests here.
+
+    def test_habit_delete(self):
+        """Тестирование удаления урока"""
+        url = reverse("habits:delete", args=(self.habit.pk,))
+        response = self.client.delete(url)
+        print(f"{self.habit.action} удалён")
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertEqual(Habit.objects.all().count(), 0)
+        self.assertFalse(Habit.objects.filter(id=self.habit.id).exists())
+
+        # self.assertFalse(Lesson.objects.filter(id=self.lesson.id).exists())
+
+    def test_habit_list(self):
+        url = reverse("habits:habits-list")
+        response = self.client.get(url)
+        data = response.json
+        print(data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(Habit.objects.all().count(), 1)
+
+    def test_habit_period_time(self):
+        """Тестирование времени на выполнение привычки."""
+        url = reverse("habits:habits-create")
+        data = {
+            "owner": self.user.pk,
+            "place": "Место тест",
+            "time": "2024-05-27 08:40",
+            "action": "Чистить зубы",
+            "period_time": "121",
+            }
+        response = self.client.post(url, data)
+        print(response.json())
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_habit_periodicity(self):
+        """Тестирование периодичности привычки."""
+        url = reverse("habits:habits-create")
+        data = {
+            "owner": self.user.pk,
+            "place": "Место тест",
+            "action": "Умываться",
+            "time": "2024-05-27 08:40",
+            "periodicity": 8}
+        response = self.client.post(url, data)
+        print(response.json())
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        # data = response.json()
+        # result = {
+        #     "count": 1,
+        #     "next": None,
+        #     "previous": None,
+        #     "results": [
+        #         {
+        #             "id": self.habit.id,
+        #             "place": "place_test",
+        #             "time": "2024-05-27 08:40",
+        #             "action": "бегать",
+        #             "is_pleasant": self.habit.is_pleasant,
+        #             "periodicity": self.habit.periodicity,
+        #             "reward": "съесть конфету",
+        #             "period_time": self.habit.period_time,
+        #             "is_public": self.habit.is_public,
+        #             "owner": self.user.pk,
+        #             "related_habit": self.habit.related_habit
+        #         }
+        #     ]
+        # }
+        # self.assertEqual(data, result)
+
+
