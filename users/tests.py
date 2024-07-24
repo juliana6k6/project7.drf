@@ -7,6 +7,7 @@ from users.models import User
 # Create your tests here.
 class UsersTestCase(APITestCase):
     """Тестирование пользователей"""
+
     def setUp(self) -> None:
         self.user = User.objects.create(email="admin@sky.pro")
         self.user.set_password("12345")
@@ -16,10 +17,7 @@ class UsersTestCase(APITestCase):
     def test_user_create(self):
         """Тестирование создания пользователя"""
         url = reverse("users:user_register")
-        data = {
-            "email": "user1@mail.ru",
-            "password": "abcde"
-        }
+        data = {"email": "user1@mail.ru", "password": "abcde"}
         response = self.client.post(url, data=data)
         print("Пользователь создан.")
         print(response.json())

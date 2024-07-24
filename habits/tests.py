@@ -9,26 +9,37 @@ class HabitTestCase(APITestCase):
     def setUp(self) -> None:
         self.client = APIClient()
         """Создание и авторизация тестового пользователя"""
-        self.user = User.objects.create(email="testov@test.ru", password="123abc", tg_id="12345")
+        self.user = User.objects.create(
+            email="testov@test.ru", password="123abc", tg_id="12345"
+        )
         self.client.force_authenticate(user=self.user)
         """Создание тестовой привычки"""
         self.habit = Habit.objects.create(
-            place="place_test", time="2024-07-22 16-00", owner=self.user, action="бегать",
-            is_pleasant=False, periodicity=1, period_time=60,
-            reward="съесть конфету", is_public=True, related_habit=None)
+            place="place_test",
+            time="2024-07-22 16-00",
+            owner=self.user,
+            action="бегать",
+            is_pleasant=False,
+            periodicity=1,
+            period_time=60,
+            reward="съесть конфету",
+            is_public=True,
+            related_habit=None,
+        )
 
     def test_habit_create(self):
         """Тестирование создания привычки"""
         url = reverse("habits:habits-create")
-        data = {"place": "place_test1",
-                "time": "2024-05-27 08:40",
-                "owner": self.user.pk,
-                "action": "купаться",
-                "periodicity": 2,
-                "period_time": 119,
-                "reward": "съесть торт",
-                "is_public": True
-                }
+        data = {
+            "place": "place_test1",
+            "time": "2024-05-27 08:40",
+            "owner": self.user.pk,
+            "action": "купаться",
+            "periodicity": 2,
+            "period_time": 119,
+            "reward": "съесть торт",
+            "is_public": True,
+        }
         response = self.client.post(url, data)
         print(response.json())
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
@@ -82,7 +93,7 @@ class HabitTestCase(APITestCase):
             "time": "2024-05-27 08:40",
             "action": "Чистить зубы",
             "period_time": "121",
-            }
+        }
         response = self.client.post(url, data)
         print(response.json())
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
@@ -95,14 +106,15 @@ class HabitTestCase(APITestCase):
             "place": "Место тест",
             "action": "Умываться",
             "time": "2024-05-27 08:40",
-            "periodicity": 8}
+            "periodicity": 8,
+        }
         response = self.client.post(url, data)
         print(response.json())
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_user_habit_list(self):
         """Тестирование списка привычек конкретного пользователя"""
-        response = self.client.get(reverse('habits:user-habits'))
+        response = self.client.get(reverse("habits:user-habits"))
         data = response.json()
         print(data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -123,10 +135,8 @@ class HabitTestCase(APITestCase):
                     "period_time": 60,
                     "is_public": True,
                     "owner": self.user.pk,
-                    "related_habit": None #self.habit.related_habit
+                    "related_habit": None,  # self.habit.related_habit
                 }
-            ]
+            ],
         }
         self.assertEqual(data, result)
-
-

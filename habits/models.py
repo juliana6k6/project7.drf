@@ -72,7 +72,6 @@ class Habit(models.Model):
         help_text="Можно публиковать в общий доступ",
     )
 
-
     def __str__(self):
         return f"{self.action} в {self.time} {self.place}"
 

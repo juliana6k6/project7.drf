@@ -1,7 +1,11 @@
 from rest_framework import viewsets
-from rest_framework.generics import (CreateAPIView, DestroyAPIView,
-                                     ListAPIView, RetrieveAPIView,
-                                     UpdateAPIView)
+from rest_framework.generics import (
+    CreateAPIView,
+    DestroyAPIView,
+    ListAPIView,
+    RetrieveAPIView,
+    UpdateAPIView,
+)
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.viewsets import ModelViewSet
 
@@ -60,7 +64,6 @@ class HabitsListAPIView(ListAPIView):
     serializer_class = HabitSerializer
     permission_classes = [AllowAny]
     pagination_class = HabitPaginator
-
 
     def get_queryset(self):
         """Фильтруем список привычек по признаку публикации"""

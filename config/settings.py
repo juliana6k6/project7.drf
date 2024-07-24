@@ -47,7 +47,10 @@ INSTALLED_APPS = [
     "rest_framework_simplejwt",
     "users",
     "habits",
-    #"django_filters"
+    "drf_yasg",
+    'corsheaders',
+    'django_celery_beat',
+    # "django_filters"
 ]
 
 MIDDLEWARE = [
@@ -58,6 +61,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = "config.urls"
@@ -140,7 +144,7 @@ MEDIA_ROOT = BASE_DIR / "media"
 
 AUTH_USER_MODEL = "users.User"
 
-#фильтры
+# фильтры
 # REST_FRAMEWORK = {
 #     'DEFAULT_FILTER_BACKENDS': (
 #         'django_filters.rest_framework.DjangoFilterBackend',
@@ -148,17 +152,54 @@ AUTH_USER_MODEL = "users.User"
 #     ),
 # }
 
-#права доступа
+# права доступа
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
     ],
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticated'],
+    "DEFAULT_PERMISSION_CLASSES": ["rest_framework.permissions.IsAuthenticated"],
 }
 
-#права доступа, токены
+# права доступа, токены
 # SIMPLE_JWT = {
 #     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=15),
 #     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
 # }
+
+#CORS
+# CORS_ALLOWED_ORIGINS = [
+#     '<http://localhost:8000>',  # Замените на адрес вашего фронтенд-сервера
+# ]
+#
+# CSRF_TRUSTED_ORIGINS = [
+#     "https://read-and-write.example.com", #  Замените на адрес вашего фронтенд-сервера
+#     # и добавьте адрес бэкенд-сервера
+# ]
+#
+# CORS_ALLOW_ALL_ORIGINS = False
+
+# Настройки для Celery
+
+# URL-адрес брокера сообщений
+CELERY_BROKER_URL = os.getenv('CELERY_BROKER_URL') # Например, Redis, который по умолчанию работает на порту 6379
+
+# URL-адрес брокера результатов, также Redis
+CELERY_RESULT_BACKEND = os.getenv('CELERY_BROKER_URL')
+
+# Часовой пояс для работы Celery
+CELERY_TIMEZONE = TIME_ZONE
+
+# Флаг отслеживания выполнения задач
+CELERY_TASK_TRACK_STARTED = True
+
+# Максимальное время на выполнение задачи
+CELERY_TASK_TIME_LIMIT = 30 * 60
+
+#celery-beat
+CELERY_BEAT_SCHEDULER = "django_celery_beat.schedulers:DatabaseScheduler"
+CELERY_BEAT_SCHEDULE = {
+    "send_message_about_habit": {
+        "task": "habits.tasks.send_message_about_habit",
+        "schedule": timedelta(minutes=1),
+    },
+}

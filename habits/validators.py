@@ -1,5 +1,6 @@
 from rest_framework.serializers import ValidationError
 
+
 class RelatedHabitOrRewardValidator:
     """Проверка заполнения полей связанной привычки и вознаграждения: должно быть заполнено только одно поле"""
 
@@ -8,11 +9,13 @@ class RelatedHabitOrRewardValidator:
         self.field2 = field2
 
     def __call__(self, value):
-        related_habit = dict(value).get(self.field1)   #value.get('related_habit')
+        related_habit = dict(value).get(self.field1)  # value.get('related_habit')
         reward = dict(value).get(self.field2)
         if related_habit and reward:
-            raise ValidationError('Два поля связанной привычки и вознаграждения не могут быть заполнены вместе, '
-                                  'выберите что-то одно')
+            raise ValidationError(
+                "Два поля связанной привычки и вознаграждения не могут быть заполнены вместе, "
+                "выберите что-то одно"
+            )
 
 
 class PleasantHabitValidator:
@@ -29,7 +32,9 @@ class PleasantHabitValidator:
         is_pleasant = dict(value).get(self.field3)
         if is_pleasant:
             if reward or related_habit:
-                raise ValidationError('У приятной привычки не может быть вознаграждения или связанной привычки.')
+                raise ValidationError(
+                    "У приятной привычки не может быть вознаграждения или связанной привычки."
+                )
 
 
 class RelatedHabitValidator:
@@ -46,7 +51,8 @@ class RelatedHabitValidator:
         is_pleasant = dict(value).get(self.field2)
         if related_habit and not is_pleasant:
             raise ValidationError(
-                    'В связанные привычки могут попадать только привычки с признаком приятной привычки.')
+                "В связанные привычки могут попадать только привычки с признаком приятной привычки."
+            )
 
 
 class DurationTimeValidator:
@@ -58,7 +64,9 @@ class DurationTimeValidator:
     def __call__(self, value):
         period_time = dict(value).get(self.field)
         if period_time and period_time >= 120:
-            raise ValidationError('Время выполнения привычки должно быть не больше 120 секунд.')
+            raise ValidationError(
+                "Время выполнения привычки должно быть не больше 120 секунд."
+            )
 
 
 class PeriodicityValidator:
@@ -71,4 +79,6 @@ class PeriodicityValidator:
         periodicity = dict(value).get(self.field)
         if periodicity:
             if not 1 <= periodicity <= 7:
-                raise ValidationError("Нельзя выполнять привычку реже, чем 1 раз в 7 дней")
+                raise ValidationError(
+                    "Нельзя выполнять привычку реже, чем 1 раз в 7 дней"
+                )
