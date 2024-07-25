@@ -16,7 +16,7 @@ class HabitTestCase(APITestCase):
         """Создание тестовой привычки"""
         self.habit = Habit.objects.create(
             place="place_test",
-            time="2024-07-22 16-00",
+            time="16-00",
             owner=self.user,
             action="бегать",
             is_pleasant=False,
@@ -24,6 +24,7 @@ class HabitTestCase(APITestCase):
             period_time=60,
             reward="съесть конфету",
             is_public=True,
+            habit_date="2024-07-25",
             related_habit=None,
         )
 
@@ -32,7 +33,7 @@ class HabitTestCase(APITestCase):
         url = reverse("habits:habits-create")
         data = {
             "place": "place_test1",
-            "time": "2024-05-27 08:40",
+            "time": "08:40",
             "owner": self.user.pk,
             "action": "купаться",
             "periodicity": 2,
@@ -90,7 +91,7 @@ class HabitTestCase(APITestCase):
         data = {
             "owner": self.user.pk,
             "place": "Место тест",
-            "time": "2024-05-27 08:40",
+            "time": "08:40",
             "action": "Чистить зубы",
             "period_time": "121",
         }
@@ -105,7 +106,7 @@ class HabitTestCase(APITestCase):
             "owner": self.user.pk,
             "place": "Место тест",
             "action": "Умываться",
-            "time": "2024-05-27 08:40",
+            "time": "08:40",
             "periodicity": 8,
         }
         response = self.client.post(url, data)
@@ -127,13 +128,14 @@ class HabitTestCase(APITestCase):
                 {
                     "id": self.habit.id,
                     "place": "place_test",
-                    "time": "2024-07-22T16:00:00Z",
+                    "time": "16:00:00",
                     "action": "бегать",
                     "is_pleasant": False,
                     "periodicity": 1,
                     "reward": "съесть конфету",
                     "period_time": 60,
                     "is_public": True,
+                    "habit_date": "2024-07-25",
                     "owner": self.user.pk,
                     "related_habit": None,  # self.habit.related_habit
                 }

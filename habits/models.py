@@ -26,10 +26,11 @@ class Habit(models.Model):
     place = models.CharField(
         max_length=100, verbose_name="Место", help_text="Укажите где?"
     )
-    time = models.DateTimeField(
-        default=timezone.now().date(),
-        verbose_name="Время в формате YYYY-MM-DD hh-mm",
+    time = models.TimeField(
+        default=timezone.now().time(),
+        verbose_name="Время в формате MM-ЧЧ",
         help_text="Укажите когда?",
+
     )
     action = models.CharField(
         max_length=100,
@@ -71,6 +72,9 @@ class Habit(models.Model):
         verbose_name="Признак публичности",
         help_text="Можно публиковать в общий доступ",
     )
+
+    habit_date = models.DateField(default=timezone.now().date(),
+                                  verbose_name="Укажите дату начала выполнения привычки ГГ-ММ-ДД")
 
     def __str__(self):
         return f"{self.action} в {self.time} {self.place}"
