@@ -19,12 +19,12 @@ class User(AbstractUser):
         verbose_name="Аватар",
         help_text="Загрузите аватар",
     )
-    tg_nick = models.CharField(
+    tg_id = models.CharField(
         max_length=50,
-        verbose_name="Tg_name",
+        verbose_name="Tg_id",
         blank=True,
         null=True,
-        help_text="Укажите tg_имя",
+        help_text="Укажите tg_id",
     )
     country = models.CharField(
         max_length=100,
