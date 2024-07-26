@@ -1,3 +1,4 @@
+import datetime
 from datetime import timedelta
 
 from celery import shared_task
@@ -25,12 +26,12 @@ def send_message_about_habit():
     """Функция проверяет все привычки. Отправляет напоминание о выполнение
     привычки в опреленное время и дату.
     После этого дата выполнения привычки меняется"""
-    current_day = timezone.now().date()
+    current_day = datetime.datetime.now().date()
     print(current_day)
     habits_list = Habit.objects.filter(is_pleasant=False, habit_date=current_day)
     print(habits_list)
     for habit in habits_list:
-        current_time = timezone.now().time().replace(second=0, microsecond=0)
+        current_time = datetime.datetime.now().time().replace(second=0, microsecond=0)
         chat_id = habit.owner.tg_id
         message = create_message(habit)
         if current_time == habit.time and chat_id is not None:
@@ -38,5 +39,3 @@ def send_message_about_habit():
             print("Сообщение отправляется")
             habit.habit_date = current_day + timedelta(days=habit.periodicity)
             habit.save()
-
-send_message_about_habit()

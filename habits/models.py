@@ -1,3 +1,5 @@
+import datetime
+
 from django.db import models
 from django.utils import timezone
 from users.models import User
@@ -25,7 +27,7 @@ class Habit(models.Model):
         max_length=100, verbose_name="Место", help_text="Укажите где?"
     )
     time = models.TimeField(
-        default=timezone.now().time(),
+        default=datetime.datetime.time,
         verbose_name="Время в формате MM-ЧЧ",
         help_text="Укажите когда?",
     )
