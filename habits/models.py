@@ -1,8 +1,5 @@
-from datetime import timedelta
-
 from django.db import models
 from django.utils import timezone
-
 from users.models import User
 
 
@@ -10,7 +7,8 @@ class Habit(models.Model):
     """Модель привычки:
     Поле related_habit указывается только для полезной привычки
     Поле is_nice - признак приятной привычки, можно привязать к полезной
-    Поле reward указывается только для полезной привычки, если нет привязки к приятной
+    Поле reward указывается только для полезной привычки,
+    если нет привязки к приятной
     """
 
     owner = models.ForeignKey(
@@ -30,7 +28,6 @@ class Habit(models.Model):
         default=timezone.now().time(),
         verbose_name="Время в формате MM-ЧЧ",
         help_text="Укажите когда?",
-
     )
     action = models.CharField(
         max_length=100,
@@ -73,8 +70,10 @@ class Habit(models.Model):
         help_text="Можно публиковать в общий доступ",
     )
 
-    habit_date = models.DateField(default=timezone.now().date(),
-                                  verbose_name="Укажите дату начала выполнения привычки ГГ-ММ-ДД")
+    habit_date = models.DateField(
+        default=timezone.now().date(),
+        verbose_name="Укажите дату начала выполнения привычки ГГ-ММ-ДД",
+    )
 
     def __str__(self):
         return f"{self.action} в {self.time} {self.place}"

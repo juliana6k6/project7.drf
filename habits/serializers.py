@@ -1,13 +1,10 @@
 from rest_framework.serializers import ModelSerializer
 
 from habits.models import Habit
-from habits.validators import (
-    RelatedHabitOrRewardValidator,
-    PleasantHabitValidator,
-    RelatedHabitValidator,
-    DurationTimeValidator,
-    PeriodicityValidator,
-)
+from habits.validators import (DurationTimeValidator, PeriodicityValidator,
+                               PleasantHabitValidator,
+                               RelatedHabitOrRewardValidator,
+                               RelatedHabitValidator)
 
 
 class HabitSerializer(ModelSerializer):
@@ -15,7 +12,8 @@ class HabitSerializer(ModelSerializer):
         model = Habit
         fields = "__all__"
         validators = [
-            RelatedHabitOrRewardValidator(field1="related_habit", field2="reward"),
+            RelatedHabitOrRewardValidator(field1="related_habit",
+                                          field2="reward"),
             PleasantHabitValidator(
                 field1="related_habit", field2="reward", field3="is_pleasant"
             ),

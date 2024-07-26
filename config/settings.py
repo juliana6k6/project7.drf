@@ -48,9 +48,9 @@ INSTALLED_APPS = [
     "users",
     "habits",
     "drf_yasg",
-    'corsheaders',
-    'django_celery_beat',
-     # "django_filters"
+    "corsheaders",
+    "django_celery_beat",
+    #   "django_filters"
 ]
 
 MIDDLEWARE = [
@@ -61,7 +61,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    'corsheaders.middleware.CorsMiddleware',
+    "corsheaders.middleware.CorsMiddleware",
 ]
 
 ROOT_URLCONF = "config.urls"
@@ -166,13 +166,14 @@ REST_FRAMEWORK = {
 #     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
 # }
 
-#CORS
+# CORS
 # CORS_ALLOWED_ORIGINS = [
 #     '<http://localhost:8000>',  # Замените на адрес вашего фронтенд-сервера
 # ]
 #
 # CSRF_TRUSTED_ORIGINS = [
-#     "https://read-and-write.example.com", #  Замените на адрес вашего фронтенд-сервера
+#     "https://read-and-write.example.com",
+#  Замените на адрес вашего фронтенд-сервера
 #     # и добавьте адрес бэкенд-сервера
 # ]
 #
@@ -181,10 +182,11 @@ REST_FRAMEWORK = {
 # Настройки для Celery
 
 # URL-адрес брокера сообщений
-CELERY_BROKER_URL = os.getenv('CELERY_BROKER_URL') # Например, Redis, который по умолчанию работает на порту 6379
+CELERY_BROKER_URL = os.getenv("CELERY_BROKER_URL")
+# Например, Redis, который по умолчанию работает на порту 6379
 
 # URL-адрес брокера результатов, также Redis
-CELERY_RESULT_BACKEND = os.getenv('CELERY_BROKER_URL')
+CELERY_RESULT_BACKEND = os.getenv("CELERY_BROKER_URL")
 
 # Часовой пояс для работы Celery
 CELERY_TIMEZONE = TIME_ZONE
@@ -195,7 +197,7 @@ CELERY_TASK_TRACK_STARTED = True
 # Максимальное время на выполнение задачи
 CELERY_TASK_TIME_LIMIT = 30 * 60
 
-#celery-beat
+# celery-beat
 CELERY_BEAT_SCHEDULER = "django_celery_beat.schedulers:DatabaseScheduler"
 CELERY_BEAT_SCHEDULE = {
     "send_message_about_habit": {
@@ -204,4 +206,4 @@ CELERY_BEAT_SCHEDULE = {
     },
 }
 TELEGRAM_URL = "https://api.telegram.org/bot"
-TELEGRAM_BOT_TOKEN = os.getenv('TG_BOT_TOKEN')
+TELEGRAM_BOT_TOKEN = os.getenv("TG_BOT_TOKEN")

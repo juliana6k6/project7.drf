@@ -1,19 +1,11 @@
-from rest_framework import viewsets
-from rest_framework.generics import (
-    CreateAPIView,
-    DestroyAPIView,
-    ListAPIView,
-    RetrieveAPIView,
-    UpdateAPIView,
-)
-from rest_framework.permissions import IsAuthenticated, AllowAny
-from rest_framework.viewsets import ModelViewSet
-
+from rest_framework.generics import (CreateAPIView, DestroyAPIView,
+                                     ListAPIView, RetrieveAPIView,
+                                     UpdateAPIView)
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from habits.models import Habit
 from habits.paginators import HabitPaginator
 from habits.serializers import HabitSerializer
 from users.permissions import IsOwner
-
 
 # class HabitViewSet(ModelViewSet):
 #     queryset = Habit.objects.all()

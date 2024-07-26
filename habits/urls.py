@@ -3,14 +3,9 @@
 from django.urls import path
 
 from habits.apps import HabitsConfig
-from habits.views import (
-    HabitsCreateAPIView,
-    HabitsDestroyAPIView,
-    HabitsListAPIView,
-    HabitsRetrieveAPIView,
-    HabitsUpdateAPIView,
-    UserHabitsListAPIView,
-)
+from habits.views import (HabitsCreateAPIView, HabitsDestroyAPIView,
+                          HabitsListAPIView, HabitsRetrieveAPIView,
+                          HabitsUpdateAPIView, UserHabitsListAPIView)
 
 # router = SimpleRouter()
 # router.register("", HabitViewSet)

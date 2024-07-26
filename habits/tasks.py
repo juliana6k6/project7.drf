@@ -1,4 +1,5 @@
-from datetime import timedelta, datetime, date
+from datetime import timedelta
+
 from celery import shared_task
 from django.utils import timezone
 
@@ -12,17 +13,22 @@ def create_message(habit):
         text_reward = f"После этого я могу {habit.reward}!"
     else:
         text_reward = f"После этого я могу {habit.related_habit.action}!"
-    message = f"Напоминание! Сегодня в {habit.time} в {habit.place} я буду {habit.action}" \
-             f"в течении {habit.period_time}! {text_reward}. Я  молодец!!!"
+    message = (
+        f"Напоминание! Сегодня в {habit.time} в {habit.place} я буду {habit.action}"
+        f"в течении {habit.period_time}! {text_reward}. Я  молодец!!!"
+    )
     return message
 
 
 @shared_task
 def send_message_about_habit():
-    """Функция проверяет все привычки. Отправляет напоминание о выполнение привычки в опреленное время и дату. 
+    """Функция проверяет все привычки. Отправляет напоминание о выполнение
+    привычки в опреленное время и дату.
     После этого дата выполнения привычки меняется"""
     current_day = timezone.now().date()
+    print(current_day)
     habits_list = Habit.objects.filter(is_pleasant=False, habit_date=current_day)
+    print(habits_list)
     for habit in habits_list:
         current_time = timezone.now().time().replace(second=0, microsecond=0)
         chat_id = habit.owner.tg_id
@@ -33,3 +39,4 @@ def send_message_about_habit():
             habit.habit_date = current_day + timedelta(days=habit.periodicity)
             habit.save()
 
+send_message_about_habit()
