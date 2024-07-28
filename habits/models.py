@@ -27,7 +27,7 @@ class Habit(models.Model):
         max_length=100, verbose_name="Место", help_text="Укажите где?"
     )
     time = models.TimeField(
-        default=datetime.datetime.time,
+        default='12:00:00',
         verbose_name="Время в формате MM-ЧЧ",
         help_text="Укажите когда?",
     )
@@ -73,8 +73,8 @@ class Habit(models.Model):
     )
 
     habit_date = models.DateField(
-        default=timezone.now().date(),
         verbose_name="Укажите дату начала выполнения привычки ГГ-ММ-ДД",
+        null=True, blank=True
     )
 
     def __str__(self):
