@@ -12,5 +12,3 @@ def send_telegram_message(tg_id, message):
             f"{settings.TELEGRAM_URL}{settings.TELEGRAM_BOT_TOKEN}/sendMessage",
             params=params,
         )
-
-
